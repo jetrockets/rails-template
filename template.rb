@@ -4,6 +4,7 @@ RAILS_REQUIREMENT = "~> 7.0.0".freeze
 
 def apply_template!
   assert_minimum_rails_version
+  assert_valid_options
 
   force_default_options!
 
@@ -21,6 +22,8 @@ def apply_template!
     IGNORE
 
     run './bin/rails javascript:install:esbuild'
+
+    run_rspec_generator
 
     template 'rubocop.yml.tt', '.rubocop.yml'
     run_rubocop_autocorrections
@@ -62,6 +65,23 @@ def assert_minimum_rails_version
   prompt = "This template requires Rails #{RAILS_REQUIREMENT}. "\
            "You are using #{rails_version}. Continue anyway?"
   exit 1 if no?(prompt)
+end
+
+def assert_valid_options
+  valid_options = {
+    skip_gemfile: false,
+    skip_bundle: false,
+    skip_git: false,
+    skip_test: true,
+    edge: false
+  }
+  valid_options.each do |key, expected|
+    next unless options.key?(key)
+    actual = options[key]
+    unless actual == expected
+      fail Rails::Generators::Error, "Unsupported option: #{key}=#{actual}"
+    end
+  end
 end
 
 def force_default_options!
@@ -109,6 +129,10 @@ end
 
 def run_rubocop_autocorrections
   run_with_clean_bundler_env 'bundle exec rubocop -A --fail-level E > /dev/null'
+end
+
+def run_rspec_generator
+  run_with_clean_bundler_env 'bin/rails generate rspec:install'
 end
 
 apply_template!

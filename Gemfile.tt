@@ -26,10 +26,15 @@ gem 'strong_migrations'
 group :development, :test do
   gem 'factory_bot_rails'
   gem 'ffaker'
+
   gem 'jetrockets-standard'
+
   gem 'letter_opener'
+
   gem 'pry'
   gem 'pry-byebug'
+
+  gem 'rspec-rails'
 end
 
 group :development do

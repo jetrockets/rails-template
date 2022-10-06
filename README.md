@@ -21,5 +21,6 @@ To generate a Rails application using this template, pass the `-m` option to `ra
 
 ```
 rails new blog \
+  -T \
   -m https://raw.githubusercontent.com/jetrockets/rails-template/main/template.rb
 ```
