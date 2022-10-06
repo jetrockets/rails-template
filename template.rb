@@ -22,6 +22,9 @@ def apply_template!
 
     run './bin/rails javascript:install:esbuild'
 
+    template 'rubocop.yml.tt', '.rubocop.yml'
+    run_rubocop_autocorrections
+
     git :init
     git add: "."
     git commit: %Q{ -m 'Initial commit' }
@@ -86,6 +89,26 @@ end
 
 def api?
   options[:api].present?
+end
+
+def run_with_clean_bundler_env(cmd)
+  success = if defined?(Bundler)
+              if Bundler.respond_to?(:with_unbundled_env)
+                Bundler.with_unbundled_env { run(cmd) }
+              else
+                Bundler.with_clean_env { run(cmd) }
+              end
+            else
+              run(cmd)
+            end
+  unless success
+    puts "Command failed, exiting: #{cmd}"
+    exit(1)
+  end
+end
+
+def run_rubocop_autocorrections
+  run_with_clean_bundler_env 'bundle exec rubocop -A --fail-level E > /dev/null'
 end
 
 apply_template!

@@ -1,0 +1,26 @@
+inherit_gem:
+  jetrockets-standard: config/rails.yml
+
+require:
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 3.1
+  Exclude:
+    - 'db/**/*'
+    - 'bin/*'
+
+Layout/ClassStructure:
+  Enabled: true
+
+Layout/MultilineArrayLineBreaks:
+  Enabled: true
+
+Layout/MultilineAssignmentLayout:
+  Enabled: true
+
+Layout/MultilineHashKeyLineBreaks:
+  Enabled: true
+
+RSpec/EmptyExampleGroup:
+  Enabled: false
