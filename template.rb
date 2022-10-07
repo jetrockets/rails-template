@@ -8,8 +8,6 @@ def apply_template!
   assert_minumal_node_version
   assert_valid_options
 
-  force_default_options!
-
   add_template_repository_to_source_path
 
   ask_for_sidekiq
@@ -85,6 +83,8 @@ end
 
 def assert_valid_options
   valid_options = {
+    database: 'postgresql',
+    javascript: 'esbuild',
     skip_gemfile: false,
     skip_bundle: false,
     skip_git: false,
@@ -98,13 +98,6 @@ def assert_valid_options
       fail Rails::Generators::Error, "Unsupported option: #{key}=#{actual}"
     end
   end
-end
-
-def force_default_options!
-  self.options = options.merge(
-    database: 'postgresql',
-    javascript: 'esbuild'
-  )
 end
 
 def ask_with_default(question, color, default)
