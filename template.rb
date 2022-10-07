@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 RAILS_REQUIREMENT = "~> 7.0.0".freeze
+NODEJS_REQUIREMENT = 14.freeze
 
 def apply_template!
   assert_minimum_rails_version
+  assert_minumal_node_version
   assert_valid_options
 
   force_default_options!
@@ -24,6 +26,8 @@ def apply_template!
     run './bin/rails javascript:install:esbuild'
 
     run_rspec_generator
+
+    template 'Procfile.dev.tt', 'Procfile.dev'
 
     template 'rubocop.yml.tt', '.rubocop.yml'
     run_rubocop_autocorrections
@@ -64,6 +68,15 @@ def assert_minimum_rails_version
 
   prompt = "This template requires Rails #{RAILS_REQUIREMENT}. "\
            "You are using #{rails_version}. Continue anyway?"
+  exit 1 if no?(prompt)
+end
+
+def assert_minumal_node_version
+  node_version = `node --version`.strip.match(/\Av(\d+)\..+/)[1]
+  return if node_version && node_version.to_i >= NODEJS_REQUIREMENT
+
+  prompt = "This template requires NodeJS #{NODEJS_REQUIREMENT}. "\
+           "You are using #{node_version}. Continue anyway?"
   exit 1 if no?(prompt)
 end
 
