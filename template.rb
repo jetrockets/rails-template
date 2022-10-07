@@ -16,6 +16,10 @@ def apply_template!
 
   template 'Gemfile.tt', force: true
 
+  apply 'lib/template.rb'
+
+  git :init unless preexisting_git_repo?
+
   after_bundle do
     append_to_file ".gitignore", <<~IGNORE
       # Ignore application config.
@@ -27,13 +31,12 @@ def apply_template!
 
     run_rspec_generator
 
-    template 'Procfile.dev.tt', 'Procfile.dev'
+    template 'Procfile.dev.tt', 'Procfile.dev', force: true
 
     template 'rubocop.yml.tt', '.rubocop.yml'
     run_rubocop_autocorrections
 
-    git :init
-    git add: "."
+    git add: '.'
     git commit: %Q{ -m 'Initial commit' }
   end
 end
@@ -122,6 +125,11 @@ end
 
 def api?
   options[:api].present?
+end
+
+def preexisting_git_repo?
+  @preexisting_git_repo ||= (File.exist?(".git") || :nope)
+  @preexisting_git_repo == true
 end
 
 def run_with_clean_bundler_env(cmd)
