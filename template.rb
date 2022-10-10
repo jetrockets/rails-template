@@ -2,10 +2,12 @@
 
 RAILS_REQUIREMENT = "~> 7.0.0".freeze
 NODEJS_REQUIREMENT = 14.freeze
+NPM_REQUIREMENT = 8.freeze
 
 def apply_template!
   assert_minimum_rails_version
   assert_minumal_node_version
+  assert_minumal_npm_version
   assert_valid_options
 
   add_template_repository_to_source_path
@@ -33,6 +35,13 @@ def apply_template!
 
     template 'rubocop.yml.tt', '.rubocop.yml'
     run_rubocop_autocorrections
+
+    add_package_json_dependency('postcss', development: true)
+    add_package_json_dependency('postcss-cli', development: true)
+    add_package_json_script('build', 'esbuild app/javascript/*.* --bundle --outdir=app/assets/builds --minify')
+    add_package_json_script('build:css', 'NODE_ENV=production postcss ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css')
+    add_package_json_script('dev:js', 'esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds')
+    add_package_json_script('dev:css', 'postcss ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css --watch')
 
     git add: '.'
     git commit: %Q{ -m 'Initial commit' }
@@ -81,6 +90,15 @@ def assert_minumal_node_version
   exit 1 if no?(prompt)
 end
 
+def assert_minumal_npm_version
+  npm_version = `npm --version`.strip.match(/\A(\d+)\..+/)[1]
+  return if npm_version && npm_version.to_i >= NPM_REQUIREMENT
+
+  prompt = "This template requires npm #{NPM_REQUIREMENT}. "\
+           "You are using #{npm_version}. Continue anyway?"
+  exit 1 if no?(prompt)
+end
+
 def assert_valid_options
   valid_options = {
     database: 'postgresql',
@@ -123,6 +141,16 @@ end
 def preexisting_git_repo?
   @preexisting_git_repo ||= (File.exist?(".git") || :nope)
   @preexisting_git_repo == true
+end
+
+def add_package_json_dependency(name, development: false)
+  command = ['npm', 'install', name.to_s.shellescape]
+  command << '--save-dev' if development
+  run command.join(' ')
+end
+
+def add_package_json_script(name, script)
+  run ['npm', 'pkg', 'set', "scripts.#{name.to_s.shellescape}=#{script.shellescape}"].join(' ')
 end
 
 def run_with_clean_bundler_env(cmd)
