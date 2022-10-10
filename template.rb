@@ -16,6 +16,7 @@ def apply_template!
 
   template 'Gemfile.tt', force: true
 
+  apply 'config/template.rb'
   apply 'lib/template.rb'
 
   git :init unless preexisting_git_repo?
