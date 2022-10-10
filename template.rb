@@ -40,7 +40,7 @@ def apply_template!
     add_package_json_dependency('postcss-cli', development: true)
     add_package_json_script('build', 'esbuild app/javascript/*.* --bundle --outdir=app/assets/builds --minify')
     add_package_json_script('build:css', 'NODE_ENV=production postcss ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css')
-    add_package_json_script('dev:js', 'esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds')
+    add_package_json_script('dev:js', 'esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --watch')
     add_package_json_script('dev:css', 'postcss ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css --watch')
 
     git add: '.'

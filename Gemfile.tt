@@ -11,6 +11,7 @@ gem 'bootsnap', require: false
 
 gem 'pg'
 <%= %Q{gem 'propshaft'\n} unless api? -%>
+gem 'puma'
 
 gem 'rails', '~> <%= Rails.version[/\d+\.\d+\.\d+/] %>'
 gem 'redis', '~> 5.0'
