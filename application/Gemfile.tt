@@ -18,6 +18,8 @@ gem 'redis', '~> 5.0'
 gem 'redis-namespace'
 
 <%= %Q{gem 'sidekiq'\n} if requires_sidekiq? -%>
+<%= %Q{gem 'sidekiq-scheduler'\n} if requires_sidekiq? -%>
+<%= %Q{gem 'sidekiq-throttled'\n} if requires_sidekiq? -%>
 gem 'strong_migrations'
 
 <%= %Q{gem 'turbo-rails'\n} unless api? -%>
