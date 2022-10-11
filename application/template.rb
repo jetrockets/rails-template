@@ -34,11 +34,14 @@ def apply_template!
 
     template 'Procfile.dev.tt', 'Procfile.dev', force: true
 
+    template 'eslintrc.tt', '.eslintrc'
     template 'rubocop.yml.tt', '.rubocop.yml'
     run_rubocop_autocorrections
 
     add_package_json_dependency('postcss', development: true)
     add_package_json_dependency('postcss-cli', development: true)
+    add_package_json_dependency('@babel/eslint-parser', development: true)
+    add_package_json_dependency('@jetrockets/eslint-config-base', development: true)
     add_package_json_script('build', 'esbuild app/javascript/*.* --bundle --outdir=app/assets/builds --minify')
     add_package_json_script('build:css', 'NODE_ENV=production postcss ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css')
     add_package_json_script('dev:js', 'esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --watch')
