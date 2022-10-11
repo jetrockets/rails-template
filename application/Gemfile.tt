@@ -42,7 +42,10 @@ end
 
 group :development do
   gem 'annotate'
+
   gem 'brakeman'
+  gem 'bundler-audit', require: false
+
   gem 'web-console'
 end
 

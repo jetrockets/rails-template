@@ -30,6 +30,8 @@ def apply_template!
 
     run './bin/rails javascript:install:esbuild'
 
+    create_binstubs
+
     run_rspec_generator
 
     template 'Procfile.dev.tt', 'Procfile.dev', force: true
@@ -176,8 +178,13 @@ def run_with_clean_bundler_env(cmd)
   end
 end
 
+def create_binstubs
+  binstubs = %w[brakeman bundler-audit rubocop sidekiq]
+  run_with_clean_bundler_env "bundle binstubs #{binstubs.join(' ')} --force"
+end
+
 def run_rubocop_autocorrections
-  run_with_clean_bundler_env 'bundle exec rubocop -A --fail-level E > /dev/null'
+  run_with_clean_bundler_env 'bin/rubocop -A --fail-level E > /dev/null'
 end
 
 def run_rspec_generator

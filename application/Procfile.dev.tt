@@ -1,4 +1,4 @@
 web: bin/rails server -p 3000
-<%= %Q{sidekiq: bundle exec sidekiq\n} if requires_sidekiq? -%>
+<%= %Q{sidekiq: bin/sidekiq\n} if requires_sidekiq? -%>
 <%= %Q{js: yarn dev:js\n} unless api? -%>
 <%= %Q{css: yarn dev:css\n} unless api? -%>
