@@ -1,3 +1,4 @@
+[![Lint](https://github.com/jetrockets/rails-template/actions/workflows/lint.yml/badge.svg)](https://github.com/jetrockets/rails-template/actions/workflows/lint.yml)
 # JetRockets Rails template
 
 ## Description
