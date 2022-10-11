@@ -180,7 +180,7 @@ end
 
 def create_binstubs
   binstubs = %w[brakeman bundler-audit rubocop sidekiq]
-  run_with_clean_bundler_env "bundle binstubs #{binstubs.join(' ')} --force"
+  run_with_clean_bundler_env "bundle binstubs #{binstubs.join(" ")} --force"
 end
 
 def run_rubocop_autocorrections
