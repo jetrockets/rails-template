@@ -3,6 +3,10 @@
 uncomment_lines 'config/application.rb', /config\.time_zone = .+/
 gsub_file 'config/application.rb', /config.time_zone = 'Central Time (US & Canada)'/, "config.time_zone = 'Eastern Time (US & Canada)'"
 
+insert_into_file 'config/application.rb', <<-RUBY, before: '  end'
+  config.active_record.schema_format = :sql
+RUBY
+
 if requires_sidekiq?
   insert_into_file 'config/application.rb', <<-RUBY, before: '  end'
     config.active_job.queue_adapter = :sidekiq
