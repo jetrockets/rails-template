@@ -24,5 +24,5 @@ rails new blog \
   -T \
   --database=postgresql \
   --javascript=esbuild \
-  -m https://raw.githubusercontent.com/jetrockets/rails-template/main/template.rb
+  -m https://raw.githubusercontent.com/jetrockets/rails-template/main/application/template.rb
 ```

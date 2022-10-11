@@ -1,0 +1,6 @@
+inherit_gem:
+  jetrockets-standard: config/rails.yml
+
+AllCops:
+  TargetRubyVersion: 3.1
+  NewCops: enable

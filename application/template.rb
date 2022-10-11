@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RAILS_REQUIREMENT = "~> 7.0.0".freeze
-NODEJS_REQUIREMENT = 14.freeze
-NPM_REQUIREMENT = 8.freeze
+RAILS_REQUIREMENT = '~> 7.0.0'
+NODEJS_REQUIREMENT = 14
+NPM_REQUIREMENT = 8
 
 def apply_template!
   assert_minimum_rails_version
@@ -22,7 +22,7 @@ def apply_template!
   git :init unless preexisting_git_repo?
 
   after_bundle do
-    append_to_file ".gitignore", <<~IGNORE
+    append_to_file '.gitignore', <<~IGNORE
       # Ignore application config.
       /.env.development
       /.env.*local
@@ -45,24 +45,24 @@ def apply_template!
     add_package_json_script('dev:css', 'postcss ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css --watch')
 
     git add: '.'
-    git commit: %Q{ -m 'Initial commit' }
+    git commit: %( -m 'Initial commit' )
   end
 end
 
 # This approach is copied from the https://github.com/mattbrictson/rails-template repo.
 # Read more about overwriting source paths here: https://guides.rubyonrails.org/rails_application_templates.html#advanced-usage
 def add_template_repository_to_source_path
-  if __FILE__ =~ %r{\Ahttps?://}
+  if __FILE__.match?(%r{\Ahttps?://})
     require 'tmpdir'
 
-    source_paths.unshift(tempdir = Dir.mktmpdir("rails-template-"))
+    source_paths.unshift(tempdir = Dir.mktmpdir('rails-template-'))
     at_exit { FileUtils.remove_entry(tempdir) }
 
     git clone: [
-      "--quiet",
-      "https://github.com/jetrockets/rails-template.git",
+      '--quiet',
+      'https://github.com/jetrockets/rails-template.git',
       tempdir
-    ].map(&:shellescape).join(" ")
+    ].map(&:shellescape).join(' ')
 
     if (branch = __FILE__[%r{rails-template/(.+)/template.rb}, 1])
       Dir.chdir(tempdir) { git checkout: branch }
@@ -77,7 +77,7 @@ def assert_minimum_rails_version
   rails_version = Gem::Version.new(Rails::VERSION::STRING)
   return if requirement.satisfied_by?(rails_version)
 
-  prompt = "This template requires Rails #{RAILS_REQUIREMENT}. "\
+  prompt = "This template requires Rails #{RAILS_REQUIREMENT}. " \
            "You are using #{rails_version}. Continue anyway?"
   exit 1 if no?(prompt)
 end
@@ -86,7 +86,7 @@ def assert_minumal_node_version
   node_version = `node --version`.strip.match(/\Av(\d+)\..+/)[1]
   return if node_version && node_version.to_i >= NODEJS_REQUIREMENT
 
-  prompt = "This template requires NodeJS #{NODEJS_REQUIREMENT}. "\
+  prompt = "This template requires NodeJS #{NODEJS_REQUIREMENT}. " \
            "You are using #{node_version}. Continue anyway?"
   exit 1 if no?(prompt)
 end
@@ -95,7 +95,7 @@ def assert_minumal_npm_version
   npm_version = `npm --version`.strip.match(/\A(\d+)\..+/)[1]
   return if npm_version && npm_version.to_i >= NPM_REQUIREMENT
 
-  prompt = "This template requires npm #{NPM_REQUIREMENT}. "\
+  prompt = "This template requires npm #{NPM_REQUIREMENT}. " \
            "You are using #{npm_version}. Continue anyway?"
   exit 1 if no?(prompt)
 end
@@ -121,14 +121,14 @@ end
 
 def ask_with_default(question, color, default)
   return default unless $stdin.tty?
-  question = (question.split("?") << " [#{default}]?").join
+  question = (question.split('?') << " [#{default}]?").join
   answer = ask(question, color)
   answer.to_s.strip.empty? ? default : answer
 end
 
 def ask_for_sidekiq
   @requires_sidekiq ||=
-    ask_with_default("Is Sidekiq needed in this app", :blue, 'yes')
+    ask_with_default('Is Sidekiq needed in this app', :blue, 'yes')
 end
 
 def requires_sidekiq?
@@ -140,7 +140,7 @@ def api?
 end
 
 def preexisting_git_repo?
-  @preexisting_git_repo ||= (File.exist?(".git") || :nope)
+  @preexisting_git_repo ||= (File.exist?('.git') || :nope)
   @preexisting_git_repo == true
 end
 
@@ -155,15 +155,16 @@ def add_package_json_script(name, script)
 end
 
 def run_with_clean_bundler_env(cmd)
-  success = if defined?(Bundler)
-              if Bundler.respond_to?(:with_unbundled_env)
-                Bundler.with_unbundled_env { run(cmd) }
-              else
-                Bundler.with_clean_env { run(cmd) }
-              end
-            else
-              run(cmd)
-            end
+  success =
+    if defined?(Bundler)
+      if Bundler.respond_to?(:with_unbundled_env)
+        Bundler.with_unbundled_env { run(cmd) }
+      else
+        Bundler.with_clean_env { run(cmd) }
+      end
+    else
+      run(cmd)
+    end
   unless success
     puts "Command failed, exiting: #{cmd}"
     exit(1)

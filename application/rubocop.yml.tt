@@ -9,6 +9,7 @@ AllCops:
   Exclude:
     - 'db/**/*'
     - 'bin/*'
+  NewCops: enable
 
 Layout/ClassStructure:
   Enabled: true
