@@ -14,6 +14,8 @@ def apply_template!
 
   ask_for_sidekiq
 
+  ask_for_graphql
+
   template 'Gemfile.tt', force: true
 
   apply 'config/template.rb'
@@ -29,6 +31,8 @@ def apply_template!
     IGNORE
 
     run './bin/rails javascript:install:esbuild'
+
+    run_graphql_generator if requires_graphql?
 
     create_binstubs
 
@@ -142,6 +146,15 @@ def requires_sidekiq?
   @requires_sidekiq.strip.downcase == 'yes'
 end
 
+def ask_for_graphql
+  @requires_graphql ||=
+    ask_with_default('Is Graphql needed in this app', :blue, 'yes')
+end
+
+def requires_graphql?
+  @requires_graphql.strip.downcase == 'yes'
+end
+
 def api?
   options[:api].present?
 end
@@ -189,6 +202,10 @@ end
 
 def run_rspec_generator
   run_with_clean_bundler_env 'bin/rails generate rspec:install'
+end
+
+def run_graphql_generator
+  run_with_clean_bundler_env 'bin/rails generate graphql:install'
 end
 
 apply_template!

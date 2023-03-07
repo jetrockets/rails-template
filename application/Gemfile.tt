@@ -7,6 +7,8 @@ gem 'bootsnap', require: false
 
 <%= %Q{gem 'cssbundling-rails'\n} unless api? -%>
 
+<%= %Q{gem 'graphql'\n} if requires_graphql? -%>
+
 <%= %Q{gem 'jsbundling-rails'\n} unless api? -%>
 
 gem 'pg'
@@ -45,6 +47,8 @@ group :development do
 
   gem 'brakeman'
   gem 'bundler-audit', require: false
+
+  <%= %Q{gem 'graphiql-rails'\n} if requires_graphql? -%>
 
   gem 'web-console'
 end
