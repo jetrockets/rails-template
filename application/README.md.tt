@@ -12,3 +12,4 @@ This application currently works with:
 <%= %Q{* [Sidekiq](https://github.com/sidekiq/sidekiq)\n} if requires_sidekiq? -%>
 <%= %Q{* [GraphQL](https://graphql.org/learn)\n} if requires_graphql? -%>
 <%= %Q{* [Coverband](https://github.com/danmayer/coverband#advanced-config)\n} if requires_coverband? -%>
+* [Attractor](https://github.com/julianrubisch/attractor)

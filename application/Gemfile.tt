@@ -47,6 +47,8 @@ end
 
 group :development do
   gem 'annotate'
+  gem 'attractor'
+  gem 'attractor-ruby'
 
   gem 'brakeman'
   gem 'bundler-audit', require: false
