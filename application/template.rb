@@ -16,7 +16,11 @@ def apply_template!
 
   ask_for_graphql
 
+  ask_for_coverband
+
+  template '.env.tt', force: true
   template 'Gemfile.tt', force: true
+  template 'README.md.tt', force: true
 
   apply 'config/template.rb'
   apply 'lib/template.rb'
@@ -26,8 +30,8 @@ def apply_template!
   after_bundle do
     append_to_file '.gitignore', <<~IGNORE
       # Ignore application config.
-      /.env.development
-      /.env.*local
+      /.env.tt.development
+      /.env.tt.*local
     IGNORE
 
     run './bin/rails javascript:install:esbuild'
@@ -153,6 +157,15 @@ end
 
 def requires_graphql?
   @requires_graphql.strip.downcase == 'yes'
+end
+
+def ask_for_coverband
+  @requires_coverband ||=
+    ask_with_default('Is Coverband needed in this app', :blue, 'yes')
+end
+
+def requires_coverband?
+  @requires_coverband.strip.downcase == 'yes'
 end
 
 def api?

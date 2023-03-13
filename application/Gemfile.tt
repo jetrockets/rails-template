@@ -6,6 +6,9 @@ ruby '<%= RUBY_VERSION %>'
 gem 'bootsnap', require: false
 
 <%= %Q{gem 'cssbundling-rails'\n} unless api? -%>
+<%= %Q{gem 'coverband'\n} if requires_coverband? -%>
+
+gem 'dotenv-rails', require: 'dotenv/rails-now'
 
 <%= %Q{gem 'graphql'\n} if requires_graphql? -%>
 
