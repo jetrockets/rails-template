@@ -9,6 +9,7 @@ gem 'bootsnap', require: false
 <%= %Q{gem 'coverband'\n} if requires_coverband? -%>
 
 gem 'dotenv-rails', require: 'dotenv/rails-now'
+gem 'discard', '~> 1.2'
 
 <%= %Q{gem 'graphql'\n} if requires_graphql? -%>
 

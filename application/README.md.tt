@@ -13,3 +13,4 @@ This application currently works with:
 <%= %Q{* [GraphQL](https://graphql.org/learn)\n} if requires_graphql? -%>
 <%= %Q{* [Coverband](https://github.com/danmayer/coverband#advanced-config)\n} if requires_coverband? -%>
 * [Attractor](https://github.com/julianrubisch/attractor)
+* [Discard](https://github.com/jhawthorn/discard)
