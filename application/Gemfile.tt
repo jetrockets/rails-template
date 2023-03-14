@@ -25,12 +25,12 @@ gem 'redis-namespace'
 
 <%= %Q{gem 'sidekiq'\n} if requires_sidekiq? -%>
 <%= %Q{gem 'sidekiq-scheduler'\n} if requires_sidekiq? -%>
-<%= %Q{gem 'sidekiq-throttled'\n} if requires_sidekiq? -%>
 gem 'strong_migrations'
 
 <%= %Q{gem 'turbo-rails'\n} unless api? -%>
 
 <%= %Q{gem 'view_component'\n} unless api? -%>
+gem 'vite_rails'
 
 group :development, :test do
   gem 'factory_bot_rails'

@@ -13,7 +13,7 @@ This template currently works with:
 * Rails 7.0.x
 * Bundler 2.x
 * PostgreSQL
-* Esbuild
+* Vite
 
 ## Usage
 
@@ -24,6 +24,6 @@ To generate a Rails application using this template, pass the `-m` option to `ra
 rails new blog \
   -T \
   --database=postgresql \
-  --javascript=esbuild \
+  --javascript=vite \
   -m https://raw.githubusercontent.com/jetrockets/rails-template/main/application/template.rb
 ```

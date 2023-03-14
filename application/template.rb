@@ -34,7 +34,7 @@ def apply_template!
       /.env.tt.*local
     IGNORE
 
-    run './bin/rails javascript:install:esbuild'
+    run 'bundle exec vite install'
 
     run_graphql_generator if requires_graphql?
 
@@ -47,16 +47,17 @@ def apply_template!
     template 'eslintrc.tt', '.eslintrc'
     template 'rubocop.yml.tt', '.rubocop.yml'
     run_rubocop_autocorrections
-
-    add_package_json_dependency('postcss', development: true)
-    add_package_json_dependency('postcss-cli', development: true)
     add_package_json_dependency('@babel/eslint-parser', development: true)
     add_package_json_dependency('@jetrockets/eslint-config-base', development: true)
-    add_package_json_script('build', 'esbuild app/javascript/*.* --bundle --outdir=app/assets/builds --minify')
-    add_package_json_script('build:css', 'NODE_ENV=production postcss ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css')
-    add_package_json_script('dev:js', 'esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --watch')
-    add_package_json_script('dev:css', 'postcss ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css --watch')
-    add_package_json_script('lint', 'eslint ./app/javascript --ext .js --quiet --fix --ignore-path ./.gitignore')
+    add_package_json_dependency('autoprefixer', development: true)
+    add_package_json_dependency('cssnano', development: true)
+    add_package_json_dependency('eslint', development: true)
+    add_package_json_dependency('postcss', development: true)
+    add_package_json_dependency('postcss-cli', development: true)
+    add_package_json_dependency('vite-plugin-full-reload', development: true)
+    add_package_json_script('dev', 'bin\/vite dev')
+    add_package_json_script('build', 'bin\/vite build')
+    add_package_json_script('lint', 'eslint ./app/assets --ext .js --quiet --fix --ignore-path ./.gitignore')
 
     git add: '.'
     git commit: %( -m 'Initial commit' )
@@ -118,7 +119,7 @@ end
 def assert_valid_options
   valid_options = {
     database: 'postgresql',
-    javascript: 'esbuild',
+    javascript: 'vite',
     skip_gemfile: false,
     skip_bundle: false,
     skip_git: false,
@@ -205,7 +206,8 @@ def run_with_clean_bundler_env(cmd)
 end
 
 def create_binstubs
-  binstubs = %w[brakeman bundler-audit rubocop sidekiq]
+  binstubs = %w[brakeman bundler-audit rubocop]
+  binstubs << 'sidekiq' if requires_sidekiq?
   run_with_clean_bundler_env "bundle binstubs #{binstubs.join(" ")} --force"
 end
 
