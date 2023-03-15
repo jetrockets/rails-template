@@ -1,0 +1,18 @@
+[![Lint](https://github.com/jetrockets/rails-template/actions/workflows/lint.yml/badge.svg)](https://github.com/jetrockets/rails-template/actions/workflows/lint.yml)
+# <%= app_name %>
+
+## Description
+
+This application was generated from the recommended template for Rails 7 applications by JetRockets
+
+## Requirements
+
+Below is a list (not complete) of libraries that are included and configured:
+* Rails 7.0.x
+<%= %Q{* [Sidekiq](https://github.com/sidekiq/sidekiq)\n} if requires_sidekiq? -%>
+<%= %Q{* [GraphQL](https://graphql-ruby.org/)\n} if requires_graphql? -%>
+<%= %Q{* [Coverband](https://github.com/danmayer/coverband)\n} if requires_coverband? -%>
+<%= %Q{* [Propshaft](https://github.com/rails/propshaft)\n} unless api? -%>
+<%= %Q{* [Turbo Rails](https://github.com/hotwired/turbo-rails)\n} unless api? -%>
+* [Attractor](https://github.com/julianrubisch/attractor)
+* [Discard](https://github.com/jhawthorn/discard)

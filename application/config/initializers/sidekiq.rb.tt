@@ -10,6 +10,3 @@ end
 Sidekiq.configure_client do |config|
   config.redis = { url: ENV['REDIS_URL'], namespace: "<%= app_name %>_sidekiq_#{Rails.env}" }
 end
-
-require 'sidekiq/throttled'
-Sidekiq::Throttled.setup!

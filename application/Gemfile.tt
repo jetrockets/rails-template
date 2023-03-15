@@ -6,6 +6,10 @@ ruby '<%= RUBY_VERSION %>'
 gem 'bootsnap', require: false
 
 <%= %Q{gem 'cssbundling-rails'\n} unless api? -%>
+<%= %Q{gem 'coverband'\n} if requires_coverband? -%>
+
+gem 'dotenv-rails', require: 'dotenv/rails-now'
+gem 'discard', '~> 1.2'
 
 <%= %Q{gem 'graphql'\n} if requires_graphql? -%>
 
@@ -21,12 +25,12 @@ gem 'redis-namespace'
 
 <%= %Q{gem 'sidekiq'\n} if requires_sidekiq? -%>
 <%= %Q{gem 'sidekiq-scheduler'\n} if requires_sidekiq? -%>
-<%= %Q{gem 'sidekiq-throttled'\n} if requires_sidekiq? -%>
 gem 'strong_migrations'
 
 <%= %Q{gem 'turbo-rails'\n} unless api? -%>
 
 <%= %Q{gem 'view_component'\n} unless api? -%>
+gem 'vite_rails'
 
 group :development, :test do
   gem 'factory_bot_rails'
@@ -44,6 +48,8 @@ end
 
 group :development do
   gem 'annotate'
+  gem 'attractor'
+  gem 'attractor-ruby'
 
   gem 'brakeman'
   gem 'bundler-audit', require: false

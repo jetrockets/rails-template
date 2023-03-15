@@ -16,7 +16,11 @@ def apply_template!
 
   ask_for_graphql
 
+  ask_for_coverband
+
+  template '.env.tt', force: true
   template 'Gemfile.tt', force: true
+  template 'README.md.tt', force: true
 
   apply 'config/template.rb'
   apply 'lib/template.rb'
@@ -26,11 +30,11 @@ def apply_template!
   after_bundle do
     append_to_file '.gitignore', <<~IGNORE
       # Ignore application config.
-      /.env.development
-      /.env.*local
+      /.env.tt.development
+      /.env.tt.*local
     IGNORE
 
-    run './bin/rails javascript:install:esbuild'
+    run 'bundle exec vite install'
 
     run_graphql_generator if requires_graphql?
 
@@ -43,16 +47,17 @@ def apply_template!
     template 'eslintrc.tt', '.eslintrc'
     template 'rubocop.yml.tt', '.rubocop.yml'
     run_rubocop_autocorrections
-
-    add_package_json_dependency('postcss', development: true)
-    add_package_json_dependency('postcss-cli', development: true)
     add_package_json_dependency('@babel/eslint-parser', development: true)
     add_package_json_dependency('@jetrockets/eslint-config-base', development: true)
-    add_package_json_script('build', 'esbuild app/javascript/*.* --bundle --outdir=app/assets/builds --minify')
-    add_package_json_script('build:css', 'NODE_ENV=production postcss ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css')
-    add_package_json_script('dev:js', 'esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --watch')
-    add_package_json_script('dev:css', 'postcss ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css --watch')
-    add_package_json_script('lint', 'eslint ./app/javascript --ext .js --quiet --fix --ignore-path ./.gitignore')
+    add_package_json_dependency('autoprefixer', development: true)
+    add_package_json_dependency('cssnano', development: true)
+    add_package_json_dependency('eslint', development: true)
+    add_package_json_dependency('postcss', development: true)
+    add_package_json_dependency('postcss-cli', development: true)
+    add_package_json_dependency('vite-plugin-full-reload', development: true)
+    add_package_json_script('dev', 'bin\/vite dev')
+    add_package_json_script('build', 'bin\/vite build')
+    add_package_json_script('lint', 'eslint ./app/assets --ext .js --quiet --fix --ignore-path ./.gitignore')
 
     git add: '.'
     git commit: %( -m 'Initial commit' )
@@ -114,7 +119,7 @@ end
 def assert_valid_options
   valid_options = {
     database: 'postgresql',
-    javascript: 'esbuild',
+    javascript: 'vite',
     skip_gemfile: false,
     skip_bundle: false,
     skip_git: false,
@@ -155,6 +160,15 @@ def requires_graphql?
   @requires_graphql.strip.downcase == 'yes'
 end
 
+def ask_for_coverband
+  @requires_coverband ||=
+    ask_with_default('Is Coverband needed in this app', :blue, 'yes')
+end
+
+def requires_coverband?
+  @requires_coverband.strip.downcase == 'yes'
+end
+
 def api?
   options[:api].present?
 end
@@ -192,7 +206,8 @@ def run_with_clean_bundler_env(cmd)
 end
 
 def create_binstubs
-  binstubs = %w[brakeman bundler-audit rubocop sidekiq]
+  binstubs = %w[brakeman bundler-audit rubocop]
+  binstubs << 'sidekiq' if requires_sidekiq?
   run_with_clean_bundler_env "bundle binstubs #{binstubs.join(" ")} --force"
 end
 
