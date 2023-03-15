@@ -21,7 +21,6 @@ gem 'puma'
 
 gem 'rails', '~> <%= Rails.version[/\d+\.\d+\.\d+/] %>'
 gem 'redis', '~> 5.0'
-gem 'redis-namespace'
 
 <%= %Q{gem 'sidekiq'\n} if requires_sidekiq? -%>
 <%= %Q{gem 'sidekiq-scheduler'\n} if requires_sidekiq? -%>
