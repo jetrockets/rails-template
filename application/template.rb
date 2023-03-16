@@ -42,6 +42,10 @@ def apply_template!
 
     run_rspec_generator
 
+    insert_into_file 'spec/rails_helper.rb', <<-RUBY, after: 'RSpec.configure do |config|'
+      config.include FactoryBot::Syntax::Methods
+    RUBY
+
     template 'Procfile.dev.tt', 'Procfile.dev', force: true
 
     template 'eslintrc.tt', '.eslintrc'
