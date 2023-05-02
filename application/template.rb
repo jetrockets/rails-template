@@ -12,6 +12,9 @@ def apply_template!
 
   add_template_repository_to_source_path
 
+  ask_for_github
+  apply 'github/template.rb' if requires_github?
+
   ask_for_sidekiq
 
   ask_for_graphql
@@ -140,6 +143,14 @@ def ask_with_default(question, color, default)
   question = (question.split('?') << " [#{default}]?").join
   answer = ask(question, color)
   answer.to_s.strip.empty? ? default : answer
+end
+
+def ask_for_github
+  @requires_github ||= ask_with_default('Do you want to setup GitHub', :green, 'yes')
+end
+
+def requires_github?
+  @requires_github.strip.downcase == 'yes'
 end
 
 def ask_for_sidekiq
