@@ -8,7 +8,6 @@ gem 'bootsnap', require: false
 <%= %Q{gem 'cssbundling-rails'\n} unless api? -%>
 <%= %Q{gem 'coverband'\n} if requires_coverband? -%>
 
-gem 'dotenv-rails', require: 'dotenv/rails-now'
 gem 'discard', '~> 1.2'
 
 <%= %Q{gem 'graphql'\n} if requires_graphql? -%>
@@ -21,7 +20,6 @@ gem 'puma'
 
 gem 'rails', '~> <%= Rails.version[/\d+\.\d+\.\d+/] %>'
 gem 'redis', '~> 5.0'
-gem 'redis-namespace'
 
 <%= %Q{gem 'sidekiq'\n} if requires_sidekiq? -%>
 <%= %Q{gem 'sidekiq-scheduler'\n} if requires_sidekiq? -%>

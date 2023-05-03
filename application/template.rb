@@ -21,7 +21,6 @@ def apply_template!
 
   ask_for_coverband
 
-  template '.env.tt', force: true
   template 'Gemfile.tt', force: true
   template 'README.md.tt', force: true
 
@@ -31,12 +30,6 @@ def apply_template!
   git :init unless preexisting_git_repo?
 
   after_bundle do
-    append_to_file '.gitignore', <<~IGNORE
-      # Ignore application config.
-      /.env.tt.development
-      /.env.tt.*local
-    IGNORE
-
     run 'bundle exec vite install'
 
     run_graphql_generator if requires_graphql?
