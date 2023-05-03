@@ -1,0 +1,7 @@
+# frozen_string_literal: true
+
+class HomeController < ApplicationController
+  def index
+    <%= %Q{render json: { message: 'Hello from JetRockets' }\n} if api? -%>
+  end
+end

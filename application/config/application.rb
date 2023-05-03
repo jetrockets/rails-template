@@ -7,12 +7,6 @@ insert_into_file 'config/application.rb', <<-RUBY, before: '  end'
   config.active_record.schema_format = :sql
 RUBY
 
-if requires_coverband?
-  insert_into_file 'config/routes.rb', <<-RUBY, before: 'end'
-    mount Coverband::Reporters::Web.new, at: "/coverband" if Rails.env.development?
-  RUBY
-end
-
 if requires_sidekiq?
   insert_into_file 'config/application.rb', <<-RUBY, before: '  end'
     config.active_job.queue_adapter = :sidekiq

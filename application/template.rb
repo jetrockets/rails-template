@@ -24,6 +24,7 @@ def apply_template!
   template 'Gemfile.tt', force: true
   template 'README.md.tt', force: true
 
+  apply 'app/template.rb'
   apply 'config/template.rb'
   apply 'lib/template.rb'
 
@@ -133,7 +134,7 @@ end
 
 def ask_with_default(question, color, default)
   return default unless $stdin.tty?
-  question = (question.split('?') << " [#{default}]?").join
+  question = (question.split('?') << " [y/n (#{default})]?").join
   answer = ask(question, color)
   answer.to_s.strip.empty? ? default : answer
 end
@@ -148,7 +149,7 @@ end
 
 def ask_for_sidekiq
   @requires_sidekiq ||=
-    ask_with_default('Is Sidekiq needed in this app', :blue, 'yes')
+    ask_with_default('Is Sidekiq needed in this app', :green, 'yes')
 end
 
 def requires_sidekiq?
@@ -157,7 +158,7 @@ end
 
 def ask_for_graphql
   @requires_graphql ||=
-    ask_with_default('Is Graphql needed in this app', :blue, 'yes')
+    ask_with_default('Is Graphql needed in this app', :green, 'yes')
 end
 
 def requires_graphql?
@@ -166,7 +167,7 @@ end
 
 def ask_for_coverband
   @requires_coverband ||=
-    ask_with_default('Is Coverband needed in this app', :blue, 'yes')
+    ask_with_default('Is Coverband needed in this app', :green, 'yes')
 end
 
 def requires_coverband?
