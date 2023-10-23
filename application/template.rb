@@ -33,6 +33,15 @@ def apply_template!
   after_bundle do
     run 'bundle exec vite install'
 
+    unless api?
+      remove_dir "app/frontend"
+
+      template 'postcss.config.js.tt'
+      template 'tailwind.config.js.tt'
+      template 'config/vite.json.tt', 'config/vite.json', force: true
+      template 'vite.config.ts.tt', 'vite.config.ts', force: true
+    end
+
     run_graphql_generator if requires_graphql?
 
     create_binstubs
@@ -46,12 +55,26 @@ def apply_template!
     run_rubocop_autocorrections
     add_package_json_dependency('@babel/eslint-parser', development: true)
     add_package_json_dependency('@jetrockets/eslint-config-base', development: true)
+    add_package_json_dependency('@tailwindcss/forms', development: true)
+    add_package_json_dependency('@tailwindcss/typography', development: true)
     add_package_json_dependency('autoprefixer', development: true)
     add_package_json_dependency('cssnano', development: true)
     add_package_json_dependency('eslint', development: true)
     add_package_json_dependency('postcss', development: true)
     add_package_json_dependency('postcss-cli', development: true)
-    add_package_json_dependency('vite-plugin-full-reload', development: true)
+    add_package_json_dependency('postcss-flexbugs-fixes', development: true)
+    add_package_json_dependency('postcss-import', development: true)
+    add_package_json_dependency('postcss-nesting', development: true)
+    add_package_json_dependency('postcss-preset-env', development: true)
+    add_package_json_dependency('tailwindcss', development: true)
+    add_package_json_dependency('vite-plugin-compression', development: true)
+    add_package_json_dependency('vite-plugin-stimulus-hmr', development: true)
+    add_package_json_dependency('@hotwired/stimulus')
+    add_package_json_dependency('@hotwired/turbo-rails')
+    add_package_json_dependency('@rails/request.js')
+    add_package_json_dependency('stimulus-library')
+    add_package_json_dependency('stimulus-use')
+    add_package_json_dependency('tailwindcss-stimulus-components')
     add_package_json_script('dev', 'bin\/vite dev')
     add_package_json_script('build', 'bin\/vite build')
     add_package_json_script('lint', 'eslint ./app/assets --ext .js --quiet --fix --ignore-path ./.gitignore')
