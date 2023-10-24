@@ -3,8 +3,8 @@
 template 'app/controllers/home_controller.rb.tt'
 
 unless api?
-  remove_dir "app/assets/config"
-  remove_file "app/assets/stylesheets/application.css"
+  remove_dir 'app/assets/config'
+  remove_file 'app/assets/stylesheets/application.css'
 
   template 'app/views/home/index.html.erb.tt'
   template 'app/assets/controllers/application/index.js.tt'

@@ -34,7 +34,7 @@ def apply_template!
     run 'bundle exec vite install'
 
     unless api?
-      remove_dir "app/frontend"
+      remove_dir 'app/frontend'
 
       template 'postcss.config.js.tt'
       template 'tailwind.config.js.tt'
