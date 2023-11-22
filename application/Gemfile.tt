@@ -5,14 +5,11 @@ ruby '<%= RUBY_VERSION %>'
 
 gem 'bootsnap', require: false
 
-<%= %Q{gem 'cssbundling-rails'\n} unless api? -%>
 <%= %Q{gem 'coverband'\n} if requires_coverband? -%>
 
 gem 'discard', '~> 1.2'
 
 <%= %Q{gem 'graphql'\n} if requires_graphql? -%>
-
-<%= %Q{gem 'jsbundling-rails'\n} unless api? -%>
 
 gem 'pg'
 <%= %Q{gem 'propshaft'\n} unless api? -%>
@@ -31,6 +28,8 @@ gem 'strong_migrations'
 gem 'vite_rails'
 
 group :development, :test do
+  <%= %Q{gem 'erb_lint', require: false\n} unless api? -%>
+
   gem 'factory_bot_rails'
   gem 'ffaker'
 
