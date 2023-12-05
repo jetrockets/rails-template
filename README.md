@@ -10,7 +10,7 @@ Matt Brictson application template [https://github.com/mattbrictson/rails-templa
 ## Requirements
 
 This template currently works with:
-* Rails 7.0.x
+* Rails 7.1.x
 * Bundler 2.x
 * PostgreSQL
 * Vite

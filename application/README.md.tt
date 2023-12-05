@@ -8,7 +8,7 @@ This application was generated from the recommended template for Rails 7 applica
 ## Requirements
 
 Below is a list (not complete) of libraries that are included and configured:
-* Rails 7.0.x
+* Rails 7.1.x
 <%= %Q{* [Sidekiq](https://github.com/sidekiq/sidekiq)\n} if requires_sidekiq? -%>
 <%= %Q{* [GraphQL](https://graphql-ruby.org/)\n} if requires_graphql? -%>
 <%= %Q{* [Coverband](https://github.com/danmayer/coverband)\n} if requires_coverband? -%>
