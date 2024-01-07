@@ -1,11 +1,13 @@
 inherit_gem:
-  jetrockets-standard: config/rails.yml
+  rubocop-rails-omakase: rubocop.yml
 
 require:
-  - rubocop-rspec
+ - rubocop-faker
+ - rubocop-rspec
+ - rubocop-md
 
 AllCops:
-  TargetRubyVersion: 3.1
+  TargetRubyVersion: 3.3
   Exclude:
     - 'db/**/*'
     - 'bin/*'

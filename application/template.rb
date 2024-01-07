@@ -207,13 +207,13 @@ def preexisting_git_repo?
 end
 
 def add_package_json_dependency(name, development: false)
-  command = ['npm', 'install', name.to_s.shellescape]
+  command = [ 'npm', 'install', name.to_s.shellescape ]
   command << '--save-dev' if development
   run command.join(' ')
 end
 
 def add_package_json_script(name, script)
-  run ['npm', 'pkg', 'set', "scripts.#{name.to_s.shellescape}=#{script.shellescape}"].join(' ')
+  run [ 'npm', 'pkg', 'set', "scripts.#{name.to_s.shellescape}=#{script.shellescape}" ].join(' ')
 end
 
 def run_with_clean_bundler_env(cmd)
