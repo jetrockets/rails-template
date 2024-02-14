@@ -11,6 +11,8 @@ gem 'discard', '~> 1.2'
 
 <%= %Q{gem 'graphql'\n} if requires_graphql? -%>
 
+gem "meta-tags"
+
 gem 'pg'
 <%= %Q{gem 'propshaft'\n} unless api? -%>
 gem 'puma'
