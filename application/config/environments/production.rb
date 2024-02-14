@@ -7,7 +7,7 @@ public_file_server_regex = /config\.public_file_server\.enabled = ENV["RAILS_SER
 insert_into_file 'config/environments/production.rb', after: public_file_server_regex do
   <<-RUBY
 
-  # Ensure mailer works in development.
+  # Ensure TTL works in production.
   config.public_file_server.headers = ENV["RAILS_SERVE_STATIC_FILES"].present? && {
     "Cache-Control" => "public, max-age=15552000"
   }
