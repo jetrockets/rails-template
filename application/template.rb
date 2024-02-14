@@ -67,6 +67,7 @@ def apply_template!
     add_package_json_dependency('@hotwired/stimulus')
     add_package_json_dependency('@hotwired/turbo-rails')
     add_package_json_dependency('@rails/request.js')
+    add_package_json_dependency('mjml')
     add_package_json_dependency('stimulus-textarea-autogrow')
     add_package_json_dependency('stimulus-rails-autosave')
     add_package_json_dependency('stimulus-use')

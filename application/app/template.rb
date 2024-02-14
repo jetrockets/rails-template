@@ -34,4 +34,7 @@ unless api?
   copy_file 'public/favicon.ico', force: true
   copy_file 'public/safari-pinned-tab.svg'
   copy_file 'manifest.webmanifest'
+
+  remove_file 'app/views/layout/mailer.html.erb.tt'
+  template 'app/views/layout/mailer.html.mjml.tt'
 end
