@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 template 'app/controllers/home_controller.rb.tt'
 
 unless api?
@@ -9,6 +7,11 @@ unless api?
   template 'app/views/layout/application.html.erb.tt', force: true
   template 'app/views/layout/shared/_analytics.html.erb.tt'
   template 'app/views/layout/shared/_favicons.html.erb.tt'
+  remove_file 'app/views/layout/mailer.html.erb.tt'
+  template 'app/views/layout/mailer.html.mjml.tt'
+
+  template 'app/views/layout/mailer.html.mjml.tt'
+
   template 'app/helpers/application_helper.rb.tt', force: true
   template 'app/helpers/meta_tags_helper.rb.tt'
 
@@ -35,6 +38,5 @@ unless api?
   copy_file 'public/safari-pinned-tab.svg'
   copy_file 'manifest.webmanifest'
 
-  remove_file 'app/views/layout/mailer.html.erb.tt'
-  template 'app/views/layout/mailer.html.mjml.tt'
+
 end

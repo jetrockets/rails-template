@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RAILS_REQUIREMENT = '~> 7.1.2'
 NODEJS_REQUIREMENT = 14
 NPM_REQUIREMENT = 8

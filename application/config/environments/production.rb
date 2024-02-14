@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 uncomment_lines 'config/environments/production.rb', /config\.force_ssl = true/
 
 public_file_server_regex = /config\.public_file_server\.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?\n/

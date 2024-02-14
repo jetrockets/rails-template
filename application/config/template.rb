@@ -1,6 +1,5 @@
-# frozen_string_literal: true
-
 template 'config/initializers/sidekiq.rb.tt' if requires_sidekiq?
+template 'config/initializers/extentions.rb.tt'
 template 'config/initializers/generators.rb.tt'
 template 'config/initializers/mjml.rb.tt'
 
