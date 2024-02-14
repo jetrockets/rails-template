@@ -20,3 +20,6 @@ jobs:
         gem install bundler
         bundle install
         bundle exec rubocop
+    - name: Standard
+      run: |
+        yarn standard

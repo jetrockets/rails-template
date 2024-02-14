@@ -74,6 +74,7 @@ def apply_template!
 
     add_package_json_script('dev', 'bin\/vite dev')
     add_package_json_script('build', 'bin\/vite build')
+    add_package_json_script('standard', 'standard')
 
     git add: '.'
     git commit: %( -m 'Initial commit' )
