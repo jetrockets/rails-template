@@ -1,7 +1,16 @@
-# frozen_string_literal: true
-
 class HomeController < ApplicationController
   def index
+    unless api?
+      flash.now[:success] = "Flash message example"
+    end
     <%= %Q{render json: { message: 'Hello from JetRockets' }\n} if api? -%>
+  end
+
+  unless api?
+    def terms
+    end
+
+    def privacy
+    end
   end
 end

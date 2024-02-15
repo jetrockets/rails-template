@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 def apply_template!
   ask_for_github_pull_request_template
 

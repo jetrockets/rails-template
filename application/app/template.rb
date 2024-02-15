@@ -1,19 +1,25 @@
-# frozen_string_literal: true
-
 template 'app/controllers/home_controller.rb.tt'
 
 unless api?
-  remove_dir 'app/assets/config'
-  remove_file 'app/assets/stylesheets/application.css'
+  remove_file 'app/views/layout/mailer.html.erb.tt'
+  directory "app/views", force: true
 
-  template 'app/views/home/index.html.erb.tt'
-  template 'app/assets/controllers/application/index.js.tt'
-  template 'app/assets/entrypoints/application.js.tt'
-  template 'app/assets/entrypoints/application.css.tt'
-  template 'app/assets/init/index.js.tt'
-  template 'app/assets/init/stimulus.js.tt'
-  template 'app/assets/init/turbo.js.tt'
-  template 'app/assets/stylesheets/components.css.tt'
-  template 'app/assets/stylesheets/vendors.css.tt'
-  template 'app/assets/stylesheets/tailwindcss.css.tt'
+  directory "app/helpers", force: true
+
+  remove_file 'app/assets/stylesheets/application.css'
+  remove_dir 'app/assets/config'
+
+  directory "app/assets", force: true
+
+  remove_file 'public/apple-touch-icon-precomposed.png'
+  copy_file 'public/apple-touch-icon.png', force: true
+  copy_file 'public/favicon-16x16.png'
+  copy_file 'public/favicon-32x32.png'
+  copy_file 'public/favicon-192x192.png'
+  copy_file 'public/favicon.ico', force: true
+  copy_file 'public/safari-pinned-tab.svg'
+  copy_file 'public/manifest.webmanifest'
+
+  # View Components
+  directory "app/components", force: true
 end

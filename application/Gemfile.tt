@@ -11,6 +11,11 @@ gem 'discard', '~> 1.2'
 
 <%= %Q{gem 'graphql'\n} if requires_graphql? -%>
 
+gem "inline_svg"
+
+gem "meta-tags"
+gem 'mjml-rails'
+
 gem 'pg'
 <%= %Q{gem 'propshaft'\n} unless api? -%>
 gem 'puma'

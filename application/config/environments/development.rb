@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 mailer_regex = /config\.action_mailer\.perform_caching = false\n/
 
 insert_into_file 'config/environments/development.rb', after: mailer_regex do
