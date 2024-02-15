@@ -1,34 +1,15 @@
 template 'app/controllers/home_controller.rb.tt'
 
 unless api?
-  remove_dir 'app/assets/config'
-  remove_file 'app/assets/stylesheets/application.css'
-
-  template 'app/views/layout/application.html.erb.tt', force: true
-  template 'app/views/layout/shared/_analytics.html.erb.tt'
-  template 'app/views/layout/shared/_favicons.html.erb.tt'
   remove_file 'app/views/layout/mailer.html.erb.tt'
-  template 'app/views/layout/mailer.html.mjml.tt'
+  directory "app/views", force: true
 
-  template 'app/views/layout/mailer.html.mjml.tt'
+  directory "app/helpers", force: true
 
-  template 'app/helpers/application_helper.rb.tt', force: true
-  template 'app/helpers/meta_tags_helper.rb.tt'
+  remove_file 'app/assets/stylesheets/application.css'
+  remove_dir 'app/assets/config'
 
-  template 'app/views/home/index.html.erb.tt'
-  template 'app/assets/controllers/index.js.tt'
-  template 'app/assets/controllers/modal_controller.js.tt'
-  template 'app/assets/entrypoints/application.js.tt'
-  template 'app/assets/entrypoints/application.css.tt'
-  template 'app/assets/init/index.js.tt'
-  template 'app/assets/init/stimulus.js.tt'
-  template 'app/assets/init/turbo.js.tt'
-  template 'app/assets/stylesheets/components.css.tt'
-  template 'app/assets/stylesheets/vendors.css.tt'
-  template 'app/assets/stylesheets/base.css.tt'
-
-  copy_file 'app/assets/images/og.jpg'
-  copy_file 'app/assets/images/logo.svg'
+  directory "app/assets", force: true
 
   remove_file 'public/apple-touch-icon-precomposed.png'
   copy_file 'public/apple-touch-icon.png', force: true
@@ -37,7 +18,8 @@ unless api?
   copy_file 'public/favicon-192x192.png'
   copy_file 'public/favicon.ico', force: true
   copy_file 'public/safari-pinned-tab.svg'
-  copy_file 'manifest.webmanifest'
+  copy_file 'public/manifest.webmanifest'
 
-
+  # View Components
+  directory "app/components", force: true
 end

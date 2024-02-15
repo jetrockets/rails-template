@@ -1,4 +1,9 @@
 module ApplicationHelper
+  def component(name, *args, **kwargs, &block)
+    component = name.to_s.camelize.constantize::Component
+    render(component.new(*args, **kwargs), &block)
+  end
+
   def inline_svg_vite_tag(filename, transform_params = {})
     with_asset_finder(InlineSvg::ViteAssetFinder) do
       render_inline_svg(filename, transform_params)

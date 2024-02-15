@@ -22,23 +22,36 @@ def apply_template!
   template 'Gemfile.tt', force: true
   template 'README.md.tt', force: true
 
-  apply 'app/template.rb'
   apply 'config/template.rb'
   apply 'lib/template.rb'
 
   git :init unless preexisting_git_repo?
 
+  def prepare_javascript
+    remove_dir 'app/frontend'
+
+    template 'postcss.config.js.tt'
+    template 'tailwind.config.js.tt'
+    template 'config/vite.json.tt', 'config/vite.json', force: true
+    template 'vite.config.ts.tt', 'vite.config.ts', force: true
+
+    run "yarn add @hotwired/stimulus @hotwired/turbo-rails @rails/request.js mjml stimulus-textarea-autogrow stimulus-rails-autosave stimulus-use tailwindcss-stimulus-components"
+
+    run "yarn --dev add @tailwindcss/forms @tailwindcss/typography autoprefixer cssnano postcss standard stimulus-vite-helpers tailwindcss vite vite-plugin-rails"
+
+    add_package_json_script('dev', 'bin\/vite dev')
+    add_package_json_script('build', 'bin\/vite build')
+    add_package_json_script('standard', 'standard')
+  end
+
   after_bundle do
     run 'bundle exec vite install'
 
     unless api?
-      remove_dir 'app/frontend'
-
-      template 'postcss.config.js.tt'
-      template 'tailwind.config.js.tt'
-      template 'config/vite.json.tt', 'config/vite.json', force: true
-      template 'vite.config.ts.tt', 'vite.config.ts', force: true
+      prepare_javascript
     end
+
+    apply 'app/template.rb'
 
     run_graphql_generator if requires_graphql?
 
@@ -51,29 +64,6 @@ def apply_template!
     template 'rubocop.yml.tt', '.rubocop.yml'
 
     run_rubocop_autocorrections
-    add_package_json_dependency('@tailwindcss/forms', development: true)
-    add_package_json_dependency('@tailwindcss/typography', development: true)
-    add_package_json_dependency('autoprefixer', development: true)
-    add_package_json_dependency('cssnano', development: true)
-    add_package_json_dependency('postcss', development: true)
-    add_package_json_dependency('standard', development: true)
-    add_package_json_dependency('stimulus-vite-helpers', development: true)
-    add_package_json_dependency('tailwindcss', development: true)
-
-    add_package_json_dependency('vite-plugin-rails', development: true)
-
-    add_package_json_dependency('@hotwired/stimulus')
-    add_package_json_dependency('@hotwired/turbo-rails')
-    add_package_json_dependency('@rails/request.js')
-    add_package_json_dependency('mjml')
-    add_package_json_dependency('stimulus-textarea-autogrow')
-    add_package_json_dependency('stimulus-rails-autosave')
-    add_package_json_dependency('stimulus-use')
-    add_package_json_dependency('tailwindcss-stimulus-components')
-
-    add_package_json_script('dev', 'bin\/vite dev')
-    add_package_json_script('build', 'bin\/vite build')
-    add_package_json_script('standard', 'standard')
 
     git add: '.'
     git commit: %( -m 'Initial commit' )
@@ -138,8 +128,6 @@ def assert_valid_options
     javascript: 'vite',
     skip_gemfile: false,
     skip_bundle: false,
-    skip_git: false,
-    skip_test: true,
     edge: false
   }
   valid_options.each do |key, expected|
