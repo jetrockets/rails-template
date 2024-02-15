@@ -1,5 +1,8 @@
 class HomeController < ApplicationController
   def index
+    unless api?
+      flash.now[:success] = "Flash message example"
+    end
     <%= %Q{render json: { message: 'Hello from JetRockets' }\n} if api? -%>
   end
 
