@@ -59,8 +59,8 @@ def apply_template!
     add_package_json_dependency('standard', development: true)
     add_package_json_dependency('stimulus-vite-helpers', development: true)
     add_package_json_dependency('tailwindcss', development: true)
-    add_package_json_dependency('vite-plugin-compression', development: true)
-    add_package_json_dependency('vite-plugin-stimulus-hmr', development: true)
+
+    add_package_json_dependency('vite-plugin-rails', development: true)
 
     add_package_json_dependency('@hotwired/stimulus')
     add_package_json_dependency('@hotwired/turbo-rails')

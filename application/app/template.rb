@@ -28,6 +28,7 @@ unless api?
   template 'app/assets/stylesheets/base.css.tt'
 
   copy_file 'app/assets/images/og.jpg'
+  copy_file 'app/assets/images/logo.svg'
 
   remove_file 'public/apple-touch-icon-precomposed.png'
   copy_file 'public/apple-touch-icon.png', force: true
