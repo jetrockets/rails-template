@@ -6,3 +6,8 @@ template 'config/initializers/mjml.rb.tt'
 apply 'config/application.rb'
 apply 'config/routes.rb'
 apply 'config/environments/development.rb'
+
+unless api?
+  route "get '/terms', to: 'home#terms'"
+  route "get '/privacy', to: 'home#privacy'"
+end

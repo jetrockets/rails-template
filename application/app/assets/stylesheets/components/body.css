@@ -1,0 +1,13 @@
+@layer components {
+  .body {
+    @apply flex flex-col min-h-screen py-8;
+  }
+
+  .body__main {
+    @apply flex-1
+  }
+
+  .body__footer {
+    @apply pt-8 text-gray-600;
+  }
+}

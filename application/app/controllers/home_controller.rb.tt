@@ -2,4 +2,12 @@ class HomeController < ApplicationController
   def index
     <%= %Q{render json: { message: 'Hello from JetRockets' }\n} if api? -%>
   end
+
+  unless api?
+    def terms
+    end
+
+    def privacy
+    end
+  end
 end

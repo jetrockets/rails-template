@@ -20,9 +20,14 @@
     <%= yield(:head) %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="body">
+    <main class="body__main">
+      <%= yield %>
+    </main>
+
+    <%= render partial: "layouts/shared/footer" %>
 
     <%= component "ui/flash" %>
+    <%#= component "ui/modal" %>
   </body>
 </html>

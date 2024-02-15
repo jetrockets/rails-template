@@ -28,25 +28,28 @@ def apply_template!
   git :init unless preexisting_git_repo?
 
   def prepare_javascript
-    remove_dir 'app/frontend'
+    run 'bundle exec vite install'
 
-    template 'postcss.config.js.tt'
-    template 'tailwind.config.js.tt'
-    template 'config/vite.json.tt', 'config/vite.json', force: true
-    template 'vite.config.ts.tt', 'vite.config.ts', force: true
+    remove_dir 'app/frontend'
 
     run "yarn add @hotwired/stimulus @hotwired/turbo-rails @rails/request.js mjml stimulus-textarea-autogrow stimulus-rails-autosave stimulus-use tailwindcss-stimulus-components"
 
-    run "yarn --dev add @tailwindcss/forms @tailwindcss/typography autoprefixer cssnano postcss standard stimulus-vite-helpers tailwindcss vite vite-plugin-rails"
+    run "yarn --dev add @tailwindcss/forms @tailwindcss/typography autoprefixer cssnano postcss standard stimulus-vite-helpers tailwindcss vite-plugin-rails"
+
+    run "yarn remove vite-plugin-ruby"
 
     add_package_json_script('dev', 'bin\/vite dev')
     add_package_json_script('build', 'bin\/vite build')
     add_package_json_script('standard', 'standard')
+
+
+    copy_file 'postcss.config.js'
+    copy_file 'tailwind.config.js'
+    copy_file 'config/vite.json', force: true
+    copy_file 'vite.config.ts', force: true
   end
 
   after_bundle do
-    run 'bundle exec vite install'
-
     unless api?
       prepare_javascript
     end
