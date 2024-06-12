@@ -1,5 +1,6 @@
 inherit_gem:
   rubocop-rails-omakase: rubocop.yml
+  rubocop-rspec: config/default.yml
 
 require:
  - rubocop-faker
