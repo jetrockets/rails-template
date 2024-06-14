@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html lang="<%= I18n.locale %>">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= display_meta_tags(default_meta_tags) %>
+
+    <%= render partial: "layouts/shared/favicons" %>
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= vite_stylesheet_tag "application", data: { turbo_track: "reload" } %>
+    <%= vite_client_tag %>
+    <%= vite_javascript_tag "application", data: { turbo_track: "reload" }, async: true %>
+    <%= turbo_refreshes_with method: :morph, scroll: :reset %>
+
+    <%= render partial: "layouts/shared/analytics" if Rails.env.production? %>
+    <%= yield(:head) %>
+  </head>
+
+  <body class="body">
+    <%= render partial: "layouts/shared/navbar" %>
+
+    <main class="body__main">
+      <%= yield %>
+    </main>
+
+    <%= render partial: "layouts/shared/footer" %>
+
+    <%= component "ui/flash" %>
+  </body>
+</html>

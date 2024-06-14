@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RAILS_REQUIREMENT = '~> 7.1.2'
 NODEJS_REQUIREMENT = 14
 NPM_REQUIREMENT = 8
@@ -24,23 +22,39 @@ def apply_template!
   template 'Gemfile.tt', force: true
   template 'README.md.tt', force: true
 
-  apply 'app/template.rb'
   apply 'config/template.rb'
   apply 'lib/template.rb'
 
   git :init unless preexisting_git_repo?
 
-  after_bundle do
+  def prepare_javascript
     run 'bundle exec vite install'
 
-    unless api?
-      remove_dir 'app/frontend'
+    remove_dir 'app/frontend'
 
-      template 'postcss.config.js.tt'
-      template 'tailwind.config.js.tt'
-      template 'config/vite.json.tt', 'config/vite.json', force: true
-      template 'vite.config.ts.tt', 'vite.config.ts', force: true
+    run "yarn add @hotwired/stimulus @hotwired/turbo-rails @rails/request.js mjml stimulus-textarea-autogrow stimulus-rails-autosave stimulus-use tailwindcss-stimulus-components"
+
+    run "yarn --dev add @tailwindcss/forms @tailwindcss/typography autoprefixer cssnano postcss standard stimulus-vite-helpers tailwindcss vite-plugin-rails"
+
+    run "yarn remove vite-plugin-ruby"
+
+    add_package_json_script('dev', 'bin\/vite dev')
+    add_package_json_script('build', 'bin\/vite build')
+    add_package_json_script('standard', 'standard')
+
+
+    copy_file 'postcss.config.js'
+    copy_file 'tailwind.config.js'
+    copy_file 'config/vite.json', force: true
+    copy_file 'vite.config.ts', force: true
+  end
+
+  after_bundle do
+    unless api?
+      prepare_javascript
     end
+
+    apply 'app/template.rb'
 
     run_graphql_generator if requires_graphql?
 
@@ -50,34 +64,9 @@ def apply_template!
 
     template 'Procfile.dev.tt', 'Procfile.dev', force: true
 
-    template 'eslintrc.tt', '.eslintrc'
     template 'rubocop.yml.tt', '.rubocop.yml'
+
     run_rubocop_autocorrections
-    add_package_json_dependency('@babel/eslint-parser', development: true)
-    add_package_json_dependency('@jetrockets/eslint-config-base', development: true)
-    add_package_json_dependency('@tailwindcss/forms', development: true)
-    add_package_json_dependency('@tailwindcss/typography', development: true)
-    add_package_json_dependency('autoprefixer', development: true)
-    add_package_json_dependency('cssnano', development: true)
-    add_package_json_dependency('eslint', development: true)
-    add_package_json_dependency('postcss', development: true)
-    add_package_json_dependency('postcss-cli', development: true)
-    add_package_json_dependency('postcss-flexbugs-fixes', development: true)
-    add_package_json_dependency('postcss-import', development: true)
-    add_package_json_dependency('postcss-nesting', development: true)
-    add_package_json_dependency('postcss-preset-env', development: true)
-    add_package_json_dependency('tailwindcss', development: true)
-    add_package_json_dependency('vite-plugin-compression', development: true)
-    add_package_json_dependency('vite-plugin-stimulus-hmr', development: true)
-    add_package_json_dependency('@hotwired/stimulus')
-    add_package_json_dependency('@hotwired/turbo-rails')
-    add_package_json_dependency('@rails/request.js')
-    add_package_json_dependency('stimulus-library')
-    add_package_json_dependency('stimulus-use')
-    add_package_json_dependency('tailwindcss-stimulus-components')
-    add_package_json_script('dev', 'bin\/vite dev')
-    add_package_json_script('build', 'bin\/vite build')
-    add_package_json_script('lint', 'eslint ./app/assets --ext .js --quiet --fix --ignore-path ./.gitignore')
 
     git add: '.'
     git commit: %( -m 'Initial commit' )
@@ -142,8 +131,6 @@ def assert_valid_options
     javascript: 'vite',
     skip_gemfile: false,
     skip_bundle: false,
-    skip_git: false,
-    skip_test: true,
     edge: false
   }
   valid_options.each do |key, expected|
